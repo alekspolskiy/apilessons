@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 import os
 import sys
+import argparse
 
 
 def shorten_link(token, link):
@@ -56,14 +57,17 @@ def parse_link(link):
 def main():
     load_dotenv('.env')
     token = os.getenv('BIT_API_TOKEN')
-    link = input("Enter link: ")
-
+    parser = argparse.ArgumentParser(
+        description='This app shorten your link and calculate count of clicks on link'
+    )
+    link = parser.add_argument('link', help='Enter link')
+    args = parser.parse_args()
     try:
-        if check_bitlink(token, parse_link(link)):
-            clicks_count = count_clicks(token, parse_link(link))
-            print(clicks_count)
+        if check_bitlink(token, parse_link(args.link)):
+            clicks_count = count_clicks(token, parse_link(args.link))
+            print('Count of clicks on your link: ', clicks_count)
         else:
-            bitlink = shorten_link(token, link)
+            bitlink = shorten_link(token, args.link)
             print(bitlink)
     except requests.exceptions.HTTPError:
         sys.stderr.write("Not correct link\n")
