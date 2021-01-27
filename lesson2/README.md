@@ -8,14 +8,14 @@ pip install -r requirements.txt
 # Usage 
 For run programm in terminal: 
 ``` 
-python3 main.py 
+python3 main.py {your link}
 ```
 
 # Working example
 
 Input:
 ```
-https://dvmn.org/
+python3 main.py https://dvmn.org/
 ```
 Output:
 ```
@@ -23,7 +23,7 @@ bit.ly/36cIQZ5
 ```
 Input:
 ```
-bit.ly/36cIQZ5
+python3 main.py bit.ly/36cIQZ5
 ```
 Output:
 ```
