@@ -1,7 +1,12 @@
 This app working wuth https://bitly.com/ api. You may shorten any link and count how much clicks was at this link for all time.
 
+# Installing
+```
+pip install -r requirements.txt
+```
+
 # Usage 
-For run programm im terminal: 
+For run programm in terminal: 
 ``` 
 python3 main.py 
 ```
