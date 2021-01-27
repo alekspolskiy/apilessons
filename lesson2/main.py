@@ -1,11 +1,8 @@
 import requests
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 import os
-
-load_dotenv('.env')
-
-TOKEN = os.getenv('TOKEN')
-LINK = input("Enter link: ")
+import sys
 
 
 def shorten_link(token, link):
@@ -25,6 +22,7 @@ def shorten_link(token, link):
 
 
 def count_clicks(token, link):
+
     url = f'https://api-ssl.bitly.com/v4/bitlinks/{link}/clicks/summary'
     headers = {
         'Authorization': f'Bearer {token}',
@@ -39,21 +37,44 @@ def count_clicks(token, link):
     return response.json()['total_clicks']
 
 
+def check_bitlink(token, link):
+
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json',
+    }
+    response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{link}', headers=headers)
+
+    return response.ok
+
+
+def parse_link(link):
+    if link.startswith('http'):
+        return urlparse(link).netloc + urlparse(link).path
+    else:
+        return link
+
+
 def main():
-    pass
+    load_dotenv('.env')
+    token = os.getenv('BIT_API_TOKEN')
+    link = input("Enter link: ")
+
+    if (urlparse(link).netloc == 'bit.ly' or link.startswith('bit')) and check_bitlink(token, parse_link(link)):
+        try:
+            clicks_count = count_clicks(token, parse_link(link))
+            print(clicks_count)
+        except requests.exceptions.HTTPError as e:
+            sys.stderr.write("Not correct link\n")
+            sys.exit()
+    else:
+        try:
+            bitlink = shorten_link(token, link)
+            print(bitlink)
+        except requests.exceptions.HTTPError as e:
+            sys.stderr.write("Not correct link\n")
+            sys.exit()
 
 
 if __name__ == '__main__':
     main()
-    if not LINK.startswith('bit'):
-        try:
-            bitlink = shorten_link(TOKEN, LINK)
-        except requests.exceptions.HTTPError:
-            raise Exception
-        print(bitlink)
-    else:
-        try:
-            clicks_count = count_clicks(TOKEN, LINK)
-        except requests.exceptions.HTTPError:
-            raise Exception
-        print(clicks_count)
