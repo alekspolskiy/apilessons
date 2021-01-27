@@ -12,7 +12,7 @@ def shorten_link(token, link):
     }
     url = 'https://api-ssl.bitly.com/v4/shorten'
     data = {
-        'long_url': f'{link}'
+        'long_url': link
     }
 
     response = requests.post(url, headers=headers, json=data)
@@ -22,7 +22,6 @@ def shorten_link(token, link):
 
 
 def count_clicks(token, link):
-
     url = f'https://api-ssl.bitly.com/v4/bitlinks/{link}/clicks/summary'
     headers = {
         'Authorization': f'Bearer {token}',
@@ -38,7 +37,6 @@ def count_clicks(token, link):
 
 
 def check_bitlink(token, link):
-
     headers = {
         'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json',
@@ -51,8 +49,8 @@ def check_bitlink(token, link):
 def parse_link(link):
     if link.startswith('http'):
         return urlparse(link).netloc + urlparse(link).path
-    else:
-        return link
+
+    return link
 
 
 def main():
@@ -60,20 +58,16 @@ def main():
     token = os.getenv('BIT_API_TOKEN')
     link = input("Enter link: ")
 
-    if (urlparse(link).netloc == 'bit.ly' or link.startswith('bit')) and check_bitlink(token, parse_link(link)):
-        try:
+    try:
+        if check_bitlink(token, parse_link(link)):
             clicks_count = count_clicks(token, parse_link(link))
             print(clicks_count)
-        except requests.exceptions.HTTPError as e:
-            sys.stderr.write("Not correct link\n")
-            sys.exit()
-    else:
-        try:
+        else:
             bitlink = shorten_link(token, link)
             print(bitlink)
-        except requests.exceptions.HTTPError as e:
-            sys.stderr.write("Not correct link\n")
-            sys.exit()
+    except requests.exceptions.HTTPError:
+        sys.stderr.write("Not correct link\n")
+        sys.exit()
 
 
 if __name__ == '__main__':
