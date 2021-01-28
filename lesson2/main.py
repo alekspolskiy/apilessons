@@ -60,7 +60,7 @@ def main():
     parser = argparse.ArgumentParser(
         description='This app shorten your link and calculate count of clicks on link'
     )
-    link = parser.add_argument('link', help='Enter link')
+    parser.add_argument('link', help='Enter link')
     args = parser.parse_args()
     try:
         if check_bitlink(token, parse_link(args.link)):
