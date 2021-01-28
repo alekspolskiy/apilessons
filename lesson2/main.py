@@ -49,7 +49,7 @@ def check_bitlink(token, link):
 
 def parse_link(link):
     if link.startswith('http'):
-        return urlparse(link).netloc + urlparse(link).path
+        return '{}{}'.format(urlparse(link).netloc, urlparse(link).path)
 
     return link
 
