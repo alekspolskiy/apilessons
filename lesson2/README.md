@@ -1,17 +1,27 @@
+# Count clicks project
 This app working wuth https://bitly.com/ api. You may shorten any link and count how much clicks was at this link for all time.
 
-# Installing
+## Installing
+[git](https://git-scm.com/doc) must be installed .
+Download this folder using:
+```
+git clone https://github.com/alekspolskiy/apilessons.git
+```
+
+Python3 must be installed.
+Use `pip` or `pip3` for installing requirements:
 ```
 pip install -r requirements.txt
 ```
+Recommended to use [virtualenv/venv](https://docs.python.org/3/library/venv.html)
 
-# Usage 
-For run programm in terminal: 
+## Usage 
+For run programm open folder with project in terminal and use: 
 ``` 
 python3 main.py {your link}
 ```
 
-# Working example
+## Working example
 
 Input:
 ```
