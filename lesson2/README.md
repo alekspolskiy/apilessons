@@ -7,13 +7,12 @@ Download this folder using:
 ```
 git clone https://github.com/alekspolskiy/apilessons.git
 ```
-
+Recommended to use [virtualenv/venv](https://docs.python.org/3/library/venv.html)
 Python3 must be installed.
 Use `pip` or `pip3` for installing requirements:
 ```
 pip install -r requirements.txt
 ```
-Recommended to use [virtualenv/venv](https://docs.python.org/3/library/venv.html)
 
 ## Usage 
 For run programm open folder with project in terminal and use: 
