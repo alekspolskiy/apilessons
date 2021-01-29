@@ -16,7 +16,7 @@ pip install -r requirements.txt
 For correct working program log in [bitly](https://bitly.com/a/sign_in) and generate personal token in profile settings. Use [dotenv](https://pypi.org/project/python-dotenv/) to import tokken into project.
  .env:
 ```
-BIT_API_TOKEN = '{your token}'
+BIT_API_TOKEN='{your token}'
 ```
 main.py:
 ```
