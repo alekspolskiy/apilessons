@@ -14,7 +14,17 @@ Use `pip` or `pip3` for installing requirements:
 pip install -r requirements.txt
 ```
 For correct working program log in [bitly](https://bitly.com/a/sign_in) and generate personal token in profile settings. Use [dotenv](https://pypi.org/project/python-dotenv/) to import tokken into project.
+ .env:
+```
+BIT_API_TOKEN = '{your token}'
+```
+main.py:
+```
+from dotenv import load_dotenv
 
+load_dotenv('.env')
+token = os.getenv('BIT_API_TOKEN')
+```
 ## Usage 
 For run programm open folder with project in terminal and use: 
 ``` 
