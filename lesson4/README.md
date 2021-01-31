@@ -1,7 +1,7 @@
-#Space Instagram
+# Space Instagram
 This project downloads Hubble and SpaceX images and uploads it to instagram account.
 
-##How to install
+## How to install
 Use [dotenv](https://pypi.org/project/python-dotenv/) to import your login and password into project.
  .env:
 ```
@@ -23,5 +23,5 @@ Python3 should be already installed. Then use pip (or pip3, if there is a confli
 ```
 pip install -r requirements.txt
 ```
-##Project Goals
+## Project Goals
 The code is written for educational purposes on online-course for web-developers dvmn.org.
