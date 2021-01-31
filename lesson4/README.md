@@ -18,6 +18,7 @@ password = os.getenv('PASSWORD')
 
 load_photo(login, password)
 ```
+Recommended to use [virtualenv/venv](https://docs.python.org/3/library/venv.html).
 Python3 should be already installed. Then use pip (or pip3, if there is a conflict with Python2) to install dependencies:
 ```
 pip install -r requirements.txt
