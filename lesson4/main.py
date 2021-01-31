@@ -57,8 +57,8 @@ def main():
     get_hubble_image(2)
     get_image_from_collection('spacecraft')
     resize_images()
-    # load_photo(login, password)
-    # os.remove('config')
+    load_photo(login, password)
+    os.remove('config')
 
 
 if __name__ == '__main__':
