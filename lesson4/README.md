@@ -3,9 +3,10 @@ This project downloads Hubble and SpaceX images and uploads it to instagram acco
 
 ## How to install
 Use [dotenv](https://pypi.org/project/python-dotenv/) to import your login and password into project.
- ```
+
+ `
  .env:
- ```
+ `
 ```
 INSTA_LOGIN='{your login}'
 INSTA_PASSWORD='{your password}
