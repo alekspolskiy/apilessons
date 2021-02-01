@@ -3,13 +3,11 @@ import os
 
 
 def fetch_spacex(urls, images_folder):
-    if not os.path.exists(f'{images_folder}'):
-        os.makedirs(f'{images_folder}')
 
-    for url_number, url in enumerate(urls):
+    for url_number, url in enumerate(urls, start=1):
         response = requests.get(url)
         response.raise_for_status()
-        with open(f'{images_folder}/spacex{url_number + 1}.jpg', 'wb') as file:
+        with open(f'{images_folder}/spacex{url_number}.jpg', 'wb') as file:
             file.write(response.content)
 
 
