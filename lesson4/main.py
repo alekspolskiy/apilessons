@@ -25,7 +25,7 @@ def load_photos(login, password, images_folder):
         bot.upload_photo(f'{images_folder}/{img}')
 
 
-def create_upload_images(images_folder):
+def prepare_upload_images(images_folder):
     images = os.listdir(images_folder)
     for img in images:
         image = Image.open(f'{images_folder}/{img}')
@@ -48,7 +48,7 @@ def main():
     password = os.getenv('INSTA_PASSWORD')
     fetch_spacex(get_last_launch_links(), images_folder)
     get_images_from_collection('spacecraft', images_folder)
-    create_upload_images(images_folder)
+    prepare_upload_images(images_folder)
     try:
         load_photos(login, password, images_folder)
     finally:
