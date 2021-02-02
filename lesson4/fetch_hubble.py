@@ -24,6 +24,6 @@ def get_images_from_collection(collection_name, images_folder):
 
     response = requests.get(collection_url)
     response.raise_for_status()
-    images_id = [file_id['id'] for file_id in response.json()]
-    for file_id in images_id:
+    images_ids = [file_id['id'] for file_id in response.json()]
+    for file_id in images_ids:
         get_hubble_image(file_id, images_folder)
