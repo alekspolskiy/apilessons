@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 from instabot import Bot
 from fetch_spacex import fetch_spacex, get_last_launch_links
-from fetch_hubble import get_hubble_image, get_images_from_collection
+from fetch_hubble import get_images_from_collection
 
 MAX_SIZE = 1080
 
@@ -20,7 +20,7 @@ def load_photos(login, password, images_folder):
     bot.login(username=login, password=password,
               proxy=args.proxy)
 
-    images = os.listdir(f'{images_folder}')
+    images = os.listdir(images_folder)
     for img in images:
         bot.upload_photo(f'{images_folder}/{img}')
 
@@ -42,7 +42,7 @@ def create_upload_images(images_folder):
 
 def main():
     images_folder = 'images'
-    os.makedirs(f'{images_folder}', exist_ok=True)
+    os.makedirs(images_folder, exist_ok=True)
     load_dotenv('.env')
     login = os.getenv('INSTA_LOGIN')
     password = os.getenv('INSTA_PASSWORD')
