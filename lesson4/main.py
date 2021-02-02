@@ -29,7 +29,7 @@ def prepare_upload_images(images_folder):
     images = os.listdir(images_folder)
     for img in images:
         image = Image.open(f'{images_folder}/{img}')
-        if image.width or image.height > MAX_SIZE:
+        if image.width > MAX_SIZE or image.height > MAX_SIZE:
             image.thumbnail((MAX_SIZE, MAX_SIZE))
         if image.mode == 'RGBA':
             image = image.convert('RGB')
