@@ -53,7 +53,6 @@ def main():
         load_photos(login, password, images_folder)
     finally:
         shutil.rmtree('config')
-        sys.exit()
 
 
 if __name__ == '__main__':
