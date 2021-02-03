@@ -1,14 +1,13 @@
 import requests
 
 
-def get_vacancies():
+def get_vacancies(url):
     languages = ['C#', 'CSS', 'C++', 'PHP', 'Ruby', 'Python', 'Java', 'JavaScript']
-    url = 'https://api.hh.ru/vacancies/'
     for language in languages:
         params = {
             'text': f'программист {language}',
             'area': '1',
-
+            'only_with_salary': 'true',
         }
         response = requests.get(url, params=params)
         response.raise_for_status()
@@ -19,9 +18,22 @@ def get_vacancies():
             }
         )
 
+def get_python_salaries(url):
+    params = {
+        'text': 'программист Python',
+        'area': '1',
+        'only_with_salary': 'true',
+    }
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    for item in response.json()['items']:
+        print(item['salary'])
+
 
 def main():
-    get_vacancies()
+    url = 'https://api.hh.ru/vacancies/'
+    # get_vacancies(url)
+    get_python_salaries(url)
 
 
 if __name__ == '__main__':
