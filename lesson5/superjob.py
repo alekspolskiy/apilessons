@@ -6,8 +6,12 @@ def get_vacancies(secret_key):
     headers = {
         'X-Api-App-Id': secret_key
     }
+    params = {
+        'catalogues': 48,
+        'town': 4
+    }
 
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, params=params)
     response.raise_for_status()
     for vacancy in response.json()['objects']:
         print(vacancy['profession'])
