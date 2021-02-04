@@ -74,16 +74,16 @@ def predict_rub_salary_hh(vacancy_id, url):
     }
 
 
-def get_average_languages_salary(languages):
+def get_average_language_salary(languages):
+    vacancy_data = dict()
     for language in languages:
         vacancy_info = get_vacancies_salaries(language)
-        print({
-            language: {
+        vacancy_data[language] = {
                 'vacancies_found': get_vacancies(language)[f'{language}'],
                 'vacancies_processed': vacancy_info['vacancies_processed'],
                 'average_salary': vacancy_info['average_salary']
-            }
-        })
+        }
+    return vacancy_data
 
 
 def get_python_salaries(url):
