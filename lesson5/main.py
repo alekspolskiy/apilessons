@@ -55,7 +55,7 @@ def main():
     languages = ['C#', 'CSS', 'C++', 'PHP', 'Ruby', 'Python', 'Java', 'JavaScript']
     load_dotenv('.env')
     secret_key = os.getenv('SUPERJOB_SECRET_KEY')
-    # print_table_sj(secret_key, languages)
+    print_table_sj(secret_key, languages)
     print_table_hh(languages)
 
 
