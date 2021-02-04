@@ -1,9 +1,9 @@
 import requests
 import statistics
-from hh import predict_salary
+from utils import predict_salary
 
 
-def get_vacancy_salary_sj(secret_key, language):
+def get_vacancies_sj(secret_key, language):
     url = 'https://api.superjob.ru/2.0/vacancies/'
     headers = {
         'X-Api-App-Id': secret_key
@@ -11,13 +11,16 @@ def get_vacancy_salary_sj(secret_key, language):
     vacancies_ids = []
     page = 0
     pages_number = 5
+    catalogues_key = 48
+    moscow_key = 4
+    vacancies_per_page = 100
     while page < pages_number:
         params = {
-            'catalogues': 48,
-            'town': 4,
+            'catalogues': catalogues_key,
+            'town': moscow_key,
             'keyword': language,
             'page': page,
-            'count': 100
+            'count': vacancies_per_page
         }
         page_response = requests.get(url, headers=headers, params=params)
         page_response.raise_for_status()
@@ -25,9 +28,14 @@ def get_vacancy_salary_sj(secret_key, language):
         for vacancy in page_response.json()['objects']:
             vacancies_ids.append(vacancy['id'])
 
+    return vacancies_ids
+
+
+def get_vacancies_salaries_sj(secret_key, language):
+    vacancies_ids = get_vacancies_sj(secret_key, language)
     salaries_info = []
-    for id in vacancies_ids:
-        salaries_info.append(predict_rub_salary_sj(id))
+    for vacancy_id in vacancies_ids:
+        salaries_info.append(predict_rub_salary_sj(vacancy_id))
     language_salaries = []
     for salaries in salaries_info:
         salary = predict_salary(salaries['salary_currency'], salaries['salary_from'], salaries['salary_to'])
@@ -44,11 +52,11 @@ def get_vacancy_salary_sj(secret_key, language):
 def get_average_language_salary_sj(secret_key, languages):
     vacancy_data = dict()
     for language in languages:
-        vacancy_info = get_vacancy_salary_sj(secret_key, language)
-        vacancy_data[language]= {
-                'vacancies_found': vacancy_info['vacancies_found'],
-                'vacancies_processed': vacancy_info['vacancies_processed'],
-                'average_salary': vacancy_info['average_salary']
+        vacancy_info = get_vacancies_salaries_sj(secret_key, language)
+        vacancy_data[language] = {
+            'vacancies_found': vacancy_info['vacancies_found'],
+            'vacancies_processed': vacancy_info['vacancies_processed'],
+            'average_salary': vacancy_info['average_salary']
         }
     return vacancy_data
 
