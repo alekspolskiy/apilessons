@@ -42,15 +42,15 @@ def get_vacancy_salary_sj(secret_key, language):
 
 
 def get_average_language_salary_sj(secret_key, languages):
+    vacanct_data = dict()
     for language in languages:
         vacancy_info = get_vacancy_salary_sj(secret_key, language)
-        print({
-            language: {
+        vacanct_data[language]= {
                 'vacancies_found': vacancy_info['vacancies_found'],
                 'vacancies_processed': vacancy_info['vacancies_processed'],
                 'average_salary': vacancy_info['average_salary']
-            }
-        })
+        }
+    return vacanct_data
 
 
 def predict_rub_salary_sj(vacancy_id):
