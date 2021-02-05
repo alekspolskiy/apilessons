@@ -29,11 +29,11 @@ def print_tables(secret_key, languages):
                               data_hh[language]['average_salary']]
                              )
 
-    title = 'SuperJob Moscow'
+    title_sj, title_hh = 'SuperJob Moscow', 'hh Moscow'
 
-    table_instance_sj = AsciiTable(table_data_sj, title)
+    table_instance_sj = AsciiTable(table_data_sj, title_sj)
     table_instance_sj.justify_columns[2] = 'right'
-    table_instance_hh = AsciiTable(table_data_hh, title)
+    table_instance_hh = AsciiTable(table_data_hh, title_hh)
     table_instance_hh.justify_columns[2] = 'right'
 
     return [table_instance_hh.table, table_instance_sj.table]
@@ -42,10 +42,10 @@ def print_tables(secret_key, languages):
 def main():
     languages = ['C#', 'CSS', 'C++', 'PHP', 'Ruby', 'Python', 'Java', 'JavaScript']
     load_dotenv('.env')
-    secret_key = os.getenv('SUPERJOB_SECRET_KEY')
-    tables = print_tables(secret_key, ['C++'])
-    # for table in tables:
-    print(tables[1])
+    SECRET_KEY = os.getenv('SUPERJOB_SECRET_KEY')
+    tables = print_tables(SECRET_KEY, languages)
+    for table in tables:
+        print(table)
 
 
 if __name__ == '__main__':
