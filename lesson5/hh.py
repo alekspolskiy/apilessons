@@ -33,7 +33,6 @@ def get_vacancies_hh(language, vacancies_ids_check: bool):
 
 def get_vacancies_salaries_hh(language):
     vacancies_ids = get_vacancies_hh(language, vacancies_ids_check=True)
-    print(vacancies_ids)
     language_salaries = []
     for vacancy_id in vacancies_ids:
         salary_info = predict_rub_salary_hh(language, vacancy_id)
