@@ -4,12 +4,11 @@ from itertools import count
 from utils import predict_salary
 
 
-def get_vacancies_sj(secret_key, language, vacancies_ids_check: bool):
+def get_vacancies_sj(secret_key, language):
     url = 'https://api.superjob.ru/2.0/vacancies/'
     headers = {
         'X-Api-App-Id': secret_key
     }
-    vacancies_ids = []
     vacancies = []
     catalogues_key = 48
     moscow_key = 4
@@ -27,40 +26,15 @@ def get_vacancies_sj(secret_key, language, vacancies_ids_check: bool):
         page_response = requests.get(url, headers=headers, params=params)
         page_response.raise_for_status()
         for vacancy in page_response.json()['objects']:
-            if vacancies_ids_check:
-                vacancies_ids.append(vacancy['id'])
-            else:
-                vacancies.append(vacancy)
+            vacancies.append(vacancy)
         more = page_response.json()['more']
-
-    if vacancies_ids_check:
-        return vacancies_ids
     return vacancies
-
-
-def get_vacancies_salaries_sj(secret_key, language):
-    vacancies_ids = get_vacancies_sj(secret_key, language, vacancies_ids_check=True)
-    salaries_info = []
-    for vacancy_id in vacancies_ids:
-        salaries_info.append(predict_rub_salary_sj(secret_key, language, vacancy_id))
-    language_salaries = []
-    for salary_info in salaries_info:
-        if salary_info['salary_currency'] == 'rub':
-            salary = predict_salary(salary_info['salary_from'], salary_info['salary_to'])
-            if salary != 0:
-                language_salaries.append(salary)
-
-    return {
-        'vacancies_found': len(vacancies_ids),
-        'vacancies_processed': len(language_salaries),
-        'average_salary': int(statistics.mean(language_salaries))
-    }
 
 
 def get_average_language_salary_sj(secret_key, languages):
     vacancy_data = dict()
     for language in languages:
-        vacancy_info = get_vacancies_salaries_sj(secret_key, language)
+        vacancy_info = predict_rub_salary_sj(secret_key, language)
         vacancy_data[language] = {
             'vacancies_found': vacancy_info['vacancies_found'],
             'vacancies_processed': vacancy_info['vacancies_processed'],
@@ -69,13 +43,16 @@ def get_average_language_salary_sj(secret_key, languages):
     return vacancy_data
 
 
-def predict_rub_salary_sj(secret_key, language, vacancy_id):
-    vacancies = get_vacancies_sj(secret_key, language, vacancies_ids_check=False)
+def predict_rub_salary_sj(secret_key, language):
+    vacancies = get_vacancies_sj(secret_key, language)
+    salaries = []
     for vacancy in vacancies:
-        if vacancy['id'] == vacancy_id:
-
-            return {
-                'salary_currency': vacancy['currency'],
-                'salary_from': vacancy['payment_from'],
-                'salary_to': vacancy['payment_to']
-            }
+        if vacancy['currency'] == 'rub':
+            salary = predict_salary(vacancy['payment_from'], vacancy['payment_to'])
+            if salary:
+                salaries.append(salary)
+    return {
+        'vacancies_found': len(vacancies),
+        'vacancies_processed': len(salaries),
+        'average_salary': int(statistics.mean(salaries))
+    }
