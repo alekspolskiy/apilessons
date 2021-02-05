@@ -1,5 +1,6 @@
 import requests
 import statistics
+from itertools import count
 from utils import predict_salary
 
 
@@ -10,8 +11,6 @@ def get_vacancies_sj(secret_key, language, vacancies_ids_check: bool):
     }
     vacancies_ids = []
     vacancies = []
-    page = 0
-    pages_number = 5
     catalogues_key = 48
     moscow_key = 4
     vacancies_per_page = 100
@@ -21,16 +20,19 @@ def get_vacancies_sj(secret_key, language, vacancies_ids_check: bool):
         'keyword': language,
         'count': vacancies_per_page
     }
-    while page < pages_number:
-        params['page'] = page
+    more = True
+    page = count()
+    while more:
+        params['page'] = next(page)
         page_response = requests.get(url, headers=headers, params=params)
         page_response.raise_for_status()
-        page += 1
         for vacancy in page_response.json()['objects']:
             if vacancies_ids_check:
                 vacancies_ids.append(vacancy['id'])
             else:
                 vacancies.append(vacancy)
+        more = page_response.json()['more']
+
     if vacancies_ids_check:
         return vacancies_ids
     return vacancies
