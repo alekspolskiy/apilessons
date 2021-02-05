@@ -47,10 +47,9 @@ def predict_rub_salary_sj(secret_key, language):
     vacancies = get_vacancies_sj(secret_key, language)
     salaries = []
     for vacancy in vacancies:
-        if vacancy['currency'] == 'rub':
+        if vacancy['currency'] == 'rub' and (vacancy['payment_from'] or vacancy['payment_to']):
             salary = predict_salary(vacancy['payment_from'], vacancy['payment_to'])
-            if salary:
-                salaries.append(salary)
+            salaries.append(salary)
     return {
         'vacancies_found': len(vacancies),
         'vacancies_processed': len(salaries),
