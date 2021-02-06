@@ -1,5 +1,4 @@
 from __future__ import print_function
-
 import os
 from hh import get_average_language_salary
 from superjob import get_average_language_salary_sj
