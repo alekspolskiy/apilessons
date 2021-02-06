@@ -3,13 +3,12 @@ import statistics
 from utils import predict_salary
 
 
-def get_vacancies_hh(language, vacancies_ids_check: bool):
+def get_vacancies_hh(language):
     url = 'https://api.hh.ru/vacancies/'
     page = 0
     pages_number = 1
 
     vacancies = []
-    vacancies_ids = []
     params = {
         'text': f'программист {language}',
         'area': '1',
@@ -21,50 +20,30 @@ def get_vacancies_hh(language, vacancies_ids_check: bool):
         page_response.raise_for_status()
         pages_number = page_response.json()['pages']
         page += 1
-        if not vacancies_ids_check:
-            [vacancies.append(item) for item in page_response.json()['items']]
-        else:
-            [vacancies_ids.append(item['id']) for item in page_response.json()['items']]
+        [vacancies.append(item) for item in page_response.json()['items']]
 
-    if vacancies_ids_check:
-        return vacancies_ids
     return vacancies
 
 
-def get_vacancies_salaries_hh(language):
-    vacancies_ids = get_vacancies_hh(language, vacancies_ids_check=True)
-    language_salaries = []
-    for vacancy_id in vacancies_ids:
-        salary_info = predict_rub_salary_hh(language, vacancy_id)
-        if salary_info['salary_currency'] == 'RUR':
-            salary = predict_salary(
-                                    salary_info['salary_from'],
-                                    salary_info['salary_to']
-                                    )
-            language_salaries.append(salary)
+def predict_rub_salary_hh(language):
+    vacancies = get_vacancies_hh(language)
+    salaries = []
+    for vacancy in vacancies:
+        if vacancy['salary']['currency'] == 'RUR':
+            salary = predict_salary(vacancy['salary']['from'], vacancy['salary']['to'])
+            salaries.append(salary)
 
     return {
-        'vacancies_found': len(vacancies_ids),
-        'vacancies_processed': len(language_salaries),
-        'average_salary': int(statistics.mean(language_salaries))
+        'vacancies_found': len(vacancies),
+        'vacancies_processed': len(salaries),
+        'average_salary': int(statistics.mean(salaries))
     }
-
-
-def predict_rub_salary_hh(language, vacancy_id):
-    vacancies = get_vacancies_hh(language, vacancies_ids_check=False)
-    for vacancy in vacancies:
-        if vacancy['id'] == vacancy_id:
-            return {
-                'salary_currency': vacancy['salary']['currency'],
-                'salary_from': vacancy['salary']['from'],
-                'salary_to': vacancy['salary']['to']
-            }
 
 
 def get_average_language_salary(languages):
     vacancy_data = dict()
     for language in languages:
-        vacancy_info = get_vacancies_salaries_hh(language)
+        vacancy_info = predict_rub_salary_hh(language)
         vacancy_data[language] = {
                 'vacancies_found': vacancy_info['vacancies_found'],
                 'vacancies_processed': vacancy_info['vacancies_processed'],
