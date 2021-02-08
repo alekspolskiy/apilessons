@@ -10,11 +10,11 @@ def get_vacancies_sj(secret_key, language):
         'X-Api-App-Id': secret_key
     }
     vacancies = []
-    catalogues_key = 48
+    develop_catalog = 48
     moscow_key = 4
     vacancies_per_page = 100
     params = {
-        'catalogues': catalogues_key,
+        'catalogues': develop_catalog,
         'town': moscow_key,
         'keyword': language,
         'count': vacancies_per_page
