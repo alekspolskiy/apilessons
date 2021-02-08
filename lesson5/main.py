@@ -41,8 +41,8 @@ def print_tables(secret_key, languages):
 def main():
     languages = ['C#', 'CSS', 'C++', 'PHP', 'Ruby', 'Python', 'Java', 'JavaScript']
     load_dotenv('.env')
-    SECRET_KEY = os.getenv('SUPERJOB_SECRET_KEY')
-    tables = print_tables(SECRET_KEY, languages)
+    secret_key = os.getenv('SUPERJOB_SECRET_KEY')
+    tables = print_tables(secret_key, languages)
     for table in tables:
         print(table)
 
