@@ -7,11 +7,12 @@ def get_vacancies_hh(language):
     url = 'https://api.hh.ru/vacancies/'
     page = 0
     pages_number = 1
+    moscow_key = '1'
 
     vacancies = []
     params = {
         'text': f'программист {language}',
-        'area': '1',
+        'area': moscow_key,
         'only_with_salary': 'true',
     }
     while page < pages_number:
@@ -20,7 +21,8 @@ def get_vacancies_hh(language):
         page_response.raise_for_status()
         pages_number = page_response.json()['pages']
         page += 1
-        [vacancies.append(item) for item in page_response.json()['items']]
+        page_response_items = page_response.json()['items']
+        [vacancies.append(item) for item in page_response_items]
 
     return vacancies
 
