@@ -6,45 +6,40 @@ from dotenv import load_dotenv
 from terminaltables import AsciiTable
 
 
-def print_tables(secret_key, languages):
-    data_sj = get_average_language_salary_sj(secret_key, languages)
-    data_hh = get_average_language_salary(languages)
-    table_data_sj = [
-        ('Prog Language', 'Vacancies found', 'Vacancies processed', 'Average salary'),
-    ]
-    table_data_hh = [
-        ('Prog Language', 'Vacancies found', 'Vacancies processed', 'Average salary'),
-    ]
-
+def get_table_data(languages, data, header):
+    table_data = [header]
     for language in languages:
-        table_data_sj.append([language,
-                              data_sj[language]['vacancies_found'],
-                              data_sj[language]['vacancies_processed'],
-                              data_sj[language]['average_salary']]
-                             )
-        table_data_hh.append([language,
-                              data_hh[language]['vacancies_found'],
-                              data_hh[language]['vacancies_processed'],
-                              data_hh[language]['average_salary']]
-                             )
+        table_data.append([language,
+                           data[language]['vacancies_found'],
+                           data[language]['vacancies_processed'],
+                           data[language]['average_salary']]
+                          )
+    return table_data
 
-    title_sj, title_hh = 'SuperJob Moscow', 'hh Moscow'
 
-    table_instance_sj = AsciiTable(table_data_sj, title_sj)
-    table_instance_sj.justify_columns[2] = 'right'
-    table_instance_hh = AsciiTable(table_data_hh, title_hh)
-    table_instance_hh.justify_columns[2] = 'right'
+def create_table(title, data):
 
-    return [table_instance_hh.table, table_instance_sj.table]
+    table_instance = AsciiTable(data, title)
+    table_instance.justify_columns[2] = 'right'
+
+    return table_instance.table
 
 
 def main():
     languages = ['C#', 'CSS', 'C++', 'PHP', 'Ruby', 'Python', 'Java', 'JavaScript']
+    header = ('Prog Language', 'Vacancies found', 'Vacancies processed', 'Average salary')
     load_dotenv('.env')
     secret_key = os.getenv('SUPERJOB_SECRET_KEY')
-    tables = print_tables(secret_key, languages)
-    for table in tables:
-        print(table)
+    table_hh = create_table(
+                             'hh Moscow',
+                             get_table_data(languages, get_average_language_salary(languages), header)
+                             )
+    table_sj = create_table(
+                             'SuperJob Moscow',
+                             get_table_data(languages, get_average_language_salary_sj(secret_key, languages), header)
+                             )
+    print(table_hh)
+    print(table_sj)
 
 
 if __name__ == '__main__':
