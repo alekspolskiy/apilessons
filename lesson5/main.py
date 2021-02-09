@@ -20,7 +20,6 @@ def get_table_data(languages, data, header):
 
 
 def create_table(title, data):
-
     table_instance = AsciiTable(data, title)
     table_instance.justify_columns[2] = 'right'
 
@@ -32,14 +31,16 @@ def main():
     header = ('Prog Language', 'Vacancies found', 'Vacancies processed', 'Average salary')
     load_dotenv('.env')
     secret_key = os.getenv('SUPERJOB_SECRET_KEY')
+    data_hh = get_average_language_salary(languages)
+    data_sj = get_average_language_salary_sj(secret_key, languages)
     table_hh = create_table(
-                             'hh Moscow',
-                             get_table_data(languages, get_average_language_salary(languages), header)
-                             )
+        'hh Moscow',
+        get_table_data(languages, data_hh, header)
+    )
     table_sj = create_table(
-                             'SuperJob Moscow',
-                             get_table_data(languages, get_average_language_salary_sj(secret_key, languages), header)
-                             )
+        'SuperJob Moscow',
+        get_table_data(languages, data_sj, header)
+    )
     print(table_hh)
     print(table_sj)
 

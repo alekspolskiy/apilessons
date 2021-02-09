@@ -1,5 +1,6 @@
 import requests
 import statistics
+
 from utils import predict_salary
 
 
@@ -47,8 +48,8 @@ def get_average_language_salary(languages):
     for language in languages:
         vacancy_info = predict_rub_salary_hh(language)
         vacancy_data[language] = {
-                'vacancies_found': vacancy_info['vacancies_found'],
-                'vacancies_processed': vacancy_info['vacancies_processed'],
-                'average_salary': vacancy_info['average_salary']
+            'vacancies_found': vacancy_info['vacancies_found'],
+            'vacancies_processed': vacancy_info['vacancies_processed'],
+            'average_salary': vacancy_info['average_salary']
         }
     return vacancy_data
