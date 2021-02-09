@@ -1,9 +1,11 @@
 from __future__ import print_function
+
 import os
-from hh import get_average_language_salary
-from superjob import get_average_language_salary_sj
+
 from dotenv import load_dotenv
 from terminaltables import AsciiTable
+from hh import get_average_language_salary
+from superjob import get_average_language_salary_sj
 
 
 def get_table_data(languages, data, header):
