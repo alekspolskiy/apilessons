@@ -50,15 +50,3 @@ def get_average_language_salary(languages):
                 'average_salary': vacancy_info['average_salary']
         }
     return vacancy_data
-
-
-def get_python_salaries(url):
-    params = {
-        'text': 'программист Python',
-        'area': '1',
-        'only_with_salary': 'true',
-    }
-    response = requests.get(url, params=params)
-    response.raise_for_status()
-    for item in response.json()['items']:
-        print(item['salary'])
